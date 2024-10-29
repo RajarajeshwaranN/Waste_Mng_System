@@ -1,0 +1,127 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Registration Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="side-image">
+            <!-- Replace the src with your actual image path -->
+            <img src="{% static 'images/collect.jpg' %}" alt="Login Image">
+        </div>
+        
+        <!-- Login Form -->
+        
+        <div class="form-box login-form">
+            {% comment %} <div class="side-image">
+                <!-- Replace the src with your actual image path -->
+                <img src="apps/static/images/collect.jpg" alt="Login Image">
+            </div> {% endcomment %}
+            <div class="top">
+                <h3>Welcome Back</h3>
+                <p>Please enter your details to sign in</p>
+            </div>
+            
+            <form>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" placeholder="Enter your password" required>
+                </div>
+                
+                <div class="remember">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+                
+                <button type="submit" class="btn">Sign In</button>
+                
+                <div class="social-login">
+                    <p>Or continue with</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-google"></i></a>
+                        {% comment %} <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a> {% endcomment %}
+                    </div>
+                </div>
+                
+                <div class="bottom-text"> 
+                    <p>Don't have an account? <a href="#" onclick="toggleForms()">Sign Up</a></p>
+                </div>
+            </form>
+        </div>
+    
+
+        <!-- Register Form -->
+        
+        <div class="form-box register-form">
+            {% comment %} <div class="side-image">
+                <!-- Replace the src with your actual image path -->
+                <img src="/api/placeholder/850/600" alt="Register Image">
+            </div> {% endcomment %}
+            <div class="top">
+                <h3>Create Account</h3>
+                <p>Please fill in the form to continue</p>
+            </div>
+            
+            <form method="POST" action="">
+                {% csrf_token %}
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" placeholder="Enter your full name" name="full_name" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="Enter your email" name="email" required>
+                </div>
+                
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" placeholder="Create password" name="password" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Confirm Password</label>
+                    <input type="password" placeholder="Confirm password" name="confirm_password" required>
+                </div>
+                
+                <button type="submit" class="btn">Sign Up</button>
+                
+                <div class="social-login">
+                    <p>Or sign up with</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-google"></i></a>
+                        {% comment %} <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a> {% endcomment %}
+                    </div>
+                </div>
+                
+                <div class="bottom-text">
+                    <p>Already have an account? <a href="#" onclick="toggleForms()">Sign In</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleForms() {
+            const loginForm = document.querySelector('.login-form');
+            const registerForm = document.querySelector('.register-form');
+            
+            loginForm.classList.toggle('inactive');
+            registerForm.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
