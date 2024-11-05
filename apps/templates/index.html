@@ -1,0 +1,42 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waste Manager</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'style1.css' %}">
+
+</head>
+<body class="container">
+    {% comment %} header starts {% endcomment %}
+    <header>
+        
+        <nav class="nav_bar">
+            <div class="logo">Wst Manager</div>
+            <div class="menu">
+                <a href="#">Home </a>
+                <a href="#">About</a>
+                <a href="{% url 'booking' %}" name="booking">Book</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="login">
+                <a href="login.html">Log In</a>
+            </div>
+        </nav>
+    </header>
+
+    {% comment %} content section starts {% endcomment %}
+
+    <section>
+
+    </section>
+
+    {% comment %} footer starts {% endcomment %}
+    <footer>
+        <h4>Waste  Management  System  @  Copyright  2024</h4>
+    </footer>
+
+</body>
+</html>

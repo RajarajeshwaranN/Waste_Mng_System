@@ -1,61 +1,88 @@
 from django.shortcuts import render, redirect
 import mysql.connector as sql
+from .models import user,booking
+from django.contrib import messages
+from django.http import HttpResponse
 
-name=''
-email=''
-pwd=''
-cnfpwd=''
 
 # Create your views here.
+def index(request):
+    return render(request, 'index.html')
+
+
 def login_view(request):
     return render(request, 'login.html')
 
-def signupaction(request):
+def signup(request):
     
     if request.method=="POST":
-        try:
-            m = sql.connect(host='localhost', user='root', passwd='root', database='waste')
-            cursor = m.cursor()
-
-            name = request.POST.get("full_name")
+            username = request.POST.get("username")
             email = request.POST.get("email")
-            pwd = request.POST.get("password")
-            cnfpwd = request.POST.get("confirm_password")
+            password = request.POST.get("password")
+            confirm_password = request.POST.get("confirm_password")
 
-            c = "INSERT INTO user (full_name, email, password, confirm_password) VALUES (%s, %s, %s, %s)"
-            cursor.execute(c, (name, email, pwd, cnfpwd))
-            m.commit()
-            print("Data inserted successfully!")
-        except Exception as e:
-            print("An error occurred:", e)
-        finally:
-            cursor.close()
-            m.close()
+            if password == confirm_password:
+            # Save the data to the database
+                User = user(username=username, email=email, password=password, confirm_password=confirm_password)
+                User.save()
+                messages.success(request, 'Signup successful!')
+                return redirect('login')  # Redirect to login page after signup
+            else:
+                messages.error(request, 'Passwords do not match.')
 
     return render(request,'login.html')
 
 
-def loginaction(request):
-    global email,pwd
-    if request.method=="POST":
-        m=sql.connect(host='localhost',user='root',passwd='root',database='waste')
-        cursor=m.cursor()
-        d=request.POST
-        for key,value in d.items():
-            if key=="email":
-                email=value
-            if key=="password":
-                pwd=value
-            
-            
-        c="select * from user where email='{}' and password='{}'".format(email,pwd)
-        cursor.execute(c)
-        t=tuple(cursor.fetchall())
-        if t==():
-            return render(request,"error.html")
-        else:
-            return render(request,"index.html")
+def login(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        # Check if user exists in the database
         
+        try:
+            User = user.objects.get(email=email)
+            print("Email:", email)
+            print("Password:", password)
 
-    return render(request,'login.html')
+            if User.password == password:
+                # Successful login
+                # Redirect to a dashboard or home page
+                return redirect('index')  # Replace 'home' with the name of your target URL
+            else:
+                messages.error(request, 'Invalid password')
+        except user.DoesNotExist:
+            messages.error(request, 'User does not exist')
 
+    return render(request, 'login.html')
+
+def booking_view(request):
+    if request.method == 'POST':
+        # Get form data from the request
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        mobile = request.POST.get('mobile')
+        date = request.POST.get('date')
+        time = request.POST.get('time')
+        address = request.POST.get('address')
+        
+         # Check for empty fields
+        if not all([name, email, mobile, date, time, address]):
+            return HttpResponse("Please fill out all fields.")
+        
+        # Process the form data (e.g., save to the database or perform other actions)
+        # Here, you could add logic to save data to your database
+        book = booking.objects.create(
+            name=name,
+            email=email,
+            mobile=mobile,
+            date=date,
+            time=time,
+            address=address
+        )
+        book.save()
+
+        return HttpResponse("Booking submitted successfully!")
+
+    # Render the form
+    return render(request, 'booking.html')

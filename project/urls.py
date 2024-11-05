@@ -22,7 +22,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('apps/', include('apps.urls')),
     path('',include('apps.urls')),
-    path('apps/signup/', views.signupaction, name='signup'),
-    path('apps/login/', views.loginaction, name='login'),
+    path('apps/signup/', views.signup, name='signup'),
+    path('apps/login/', views.login, name='login'),
+    path('accounts/', include('allauth.urls')),
+    path('signup/', views.signup, name='signup'),
+    path('login/', views.login, name='login'),
+    path('index/', views.index, name='index'),
+    path('booking/', views.booking_view, name='booking'),
 
 ]

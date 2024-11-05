@@ -8,6 +8,20 @@
     <title>Login & Registration Form</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <style>
+        .messages {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #f8d7da; /* Light red background for error messages */
+            color: #721c24; /* Dark red text color */
+            border: 1px solid #f5c6cb; /* Light red border */
+        }
+        
+        .message {
+            margin: 5px 0;
+        }
+        
+    </style>
 </head>
 <body>
     <div class="wrapper">
@@ -28,16 +42,26 @@
                 <p>Please enter your details to sign in</p>
             </div>
             
-            <form>
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="POST" action="{% url 'login' %}"> 
+                {% csrf_token %}
+            
                 <div class="input-group">
                     <label>Email</label>
-                    <input type="email" placeholder="Enter your email" required>
+                    <input type="email" placeholder="Enter your email" name="email" required>
                 </div>
                 
                 <div class="input-group">
                     <label>Password</label>
-                    <input type="password" placeholder="Enter your password" required>
-                </div>
+                    <input type="password" placeholder="Enter your password" name="password" required>
+                </div> 
                 
                 <div class="remember">
                     <input type="checkbox" id="remember">
@@ -46,13 +70,16 @@
                 
                 <button type="submit" class="btn">Sign In</button>
                 
+                
                 <div class="social-login">
-                    <p>Or continue with</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-google"></i></a>
-                        {% comment %} <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a> {% endcomment %}
-                    </div>
+                    <p>Or Continue with</p>
+                    
+                        <div class="social-icons">
+                            {% comment %} ## anchor tag for google sign in {% endcomment %}
+                            <a href="{% url 'google_login' %}"><i class="fab fa-google"></i></a>    
+                            
+                        </div>
+                    </a>
                 </div>
                 
                 <div class="bottom-text"> 
@@ -74,11 +101,11 @@
                 <p>Please fill in the form to continue</p>
             </div>
             
-            <form method="POST" action="">
+            <form method="POST" action="{% url 'signup' %}">
                 {% csrf_token %}
                 <div class="input-group">
-                    <label>Full Name</label>
-                    <input type="text" placeholder="Enter your full name" name="full_name" required>
+                    <label>User Name</label>
+                    <input type="text" placeholder="Enter your full name" name="username" required>
                 </div>
 
                 <div class="input-group">

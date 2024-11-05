@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Form</title>
+    <link rel="stylesheet" href="{% static 'stylebook.css' %}">
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        header{
+            width: 100%;
+            height: 100pxpx;
+            background-color: grey;
+            background-size: cover;
+            font-family: 'Poppins',sans-serif;
+        }
+        nav{
+            width: 100%;
+            height: 100px;
+          
+            color: #fff;
+            display: flex;
+            justify-content: space-around;
+        align-items: center;
+        }
+        .logo{
+            font-size: 2em;
+            letter-spacing: 2px;
+        }
+        .menu a{
+            text-decoration: none;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 20px;
+        }
+        
+        .menu a:hover{
+           border: 1px solid indianred;
+           background: transparent;
+        }
+        .login a{
+            text-decoration: none;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 20px;
+            border-radius: 8px;
+            background: indianred;
+        }
+        .login a:hover{
+            border: 1px solid indianred;
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="nav_bar">
+            <div class="logo">Wst Manager</div>
+            <div class="menu">
+                <a href="{% url 'index' %}">Home </a>
+                <a href="#">About</a>
+                <a href="#">Book</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            {% comment %} <div class="login">
+                <a href="login.html">Log In</a>
+            </div> {% endcomment %}
+        </nav>
+    </header>
+
+<div class="form-container">
+    <h2>Collection Request Form</h2>
+    <form method="post" action="{% url 'booking' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="mobile">Mobile Number</label>
+            <input type="tel" id="mobile" name="mobile" pattern="[0-9]{10}" required>
+        </div>
+        <div class="form-group">
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date" required>
+        </div>
+        <div class="form-group">
+            <label for="time">Time</label>
+            <input type="time" id="time" name="time" required>
+        </div>
+        <div class="form-group">
+            <label for="address">Address</label>
+            <textarea id="address" name="address" required></textarea>
+        </div>
+        <input type="submit" value="Submit Booking">
+    </form>
+</div>
+
+</body>
+</html>

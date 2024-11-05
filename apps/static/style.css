@@ -173,10 +173,11 @@ body {
     font-weight: 600;
 }
 
-/* Register Form Specific Styles */
-.register-form {
+ /* Register Form Specific Styles */
+/* .register-form {
     display: none;
-}
+    display: flex;
+} */
 
 .register-form .top h3 {
     margin-bottom: 30px;
