@@ -4,12 +4,16 @@
     box-sizing: border-box;
     font-family: Arial, sans-serif;
 }
+/* body{
+    background-image: url({% static 'images/background.jpeg' %});
+    background-position: cover;
+} */
 
 .form-container {
-    max-width: 700px;
+    max-width: 500px;
     margin: 50px auto;
     padding: 22px;
-    background-color: #fe784563;
+    background-color: #f1855cd4;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border: black solid;
@@ -37,6 +41,8 @@ input[type="email"],
 input[type="tel"],
 input[type="date"],
 input[type="time"],
+input[type="Number"],
+select,
 textarea {
     width: 100%;
     padding: 10px;

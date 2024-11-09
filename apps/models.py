@@ -19,6 +19,9 @@ class booking(models.Model):
     date = models.DateField()
     time = models.TimeField()
     address = models.TextField()
+    waste_type = models.CharField(max_length=10)
+    quantity = models.IntegerField()
+
 
     class Meta:
         db_table = 'booking'  # Use the existing `booking` table
