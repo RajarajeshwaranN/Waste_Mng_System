@@ -29,5 +29,11 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('index/', views.index, name='index'),
     path('booking/', views.booking_view, name='booking'),
+    path('logout/', views.logout_view, name='logout'),
+    path('bookings/', views.booking_list, name='booking_list'),
+    path('bookings/delete/<str:email>/', views.delete_booking, name='delete_booking'),
+
+
+
 
 ]

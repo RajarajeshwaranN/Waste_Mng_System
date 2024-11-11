@@ -17,12 +17,12 @@
             <div class="logo">Wst Manager</div>
             <div class="menu">
                 <a href="#">Home </a>
-                <a href="#">About</a>
-                <a href="{% url 'booking' %}" name="booking">Book</a>
-                <a href="contact.html">Contact</a>
+                <a href="{% url 'booking' %}" name="booking">Request Collection</a>
+                <a href="{% url 'booking_list' %}">View Request</a>
             </div>
-            <div class="login">
-                <a href="login.html">Log In</a>
+            <div class="logout">
+                <a href="{% url 'logout' %}">Logout</a>
+
             </div>
         </nav>
     </header>
@@ -30,6 +30,39 @@
     {% comment %} content section starts {% endcomment %}
 
     <section>
+        <div class="about_mng">
+            <h1>Waste Management System</h1>
+            <p>Waste management or waste disposal includes the processes and actions required to manage waste from its inception to its final disposal. This includes the collection, transport, treatment, and disposal of waste, together with monitoring and regulation of the waste management process and waste-related laws, technologies, and economic mechanisms.</p>
+        </div>
+    <div class="btn">
+        <button class="b1" onclick="window.location.href='{% url 'booking' %}'" name='booking'>Request Collection</button>
+        <button class="b2" onclick="window.location.href='{% url 'booking_list' %}'" name='booking'>Collection History</button>
+    </div>
+
+        <div class="steps_to_use">
+            <h2>Guidelines</h2>
+            <p>You're logged in successfully!!</p>
+            <ol>
+                <li>Click on Requst Collection, to schedule your waste pickup</li>
+                <li>Fill up all the required fields</li>
+                <li>Submit your waste collection request</li>
+            </ol>
+        </div>
+        <div class="segregate">
+            <h2>Waste Segregation</h2>
+            <img src="{% static '\images\Waste-Segregation.png'%}" alt="">
+            <p>Waste segregation can be defined as the process of identifying, classifying,dividing and sorting of garbage and waste products in an effort to reduce, reuse and recycle materials.</p>
+
+            <p>In order to segregate waste appropriately, it is important to correctly identify the type waste that is generated. For the purposes of waste segregation at source, waste is identified and classified into the following categories depending on their biological, physical and chemical properties</p>
+            <ul>
+                <li><strong>Dry Waste</strong> – Refers to all items that are not considered wet/soiled items. This includes both recyclable and non-recyclable materials. Dry waste includes items such as bottles, cans, clothing, plastic, wood, glass, metals and paper.</li>
+                <li><strong>Wet Waste</strong> – Refers to all items that are organic like food items, soiled food wrappers, hygiene products, yard waste, tissues and paper towels, as well as any other soiled item that would contaminate the recyclables.</li>
+                <li><strong>Sanitary Waste</strong> – Refers to all liquid or solid waste originating solely from humans and human activities. (Can also include items from medical waste)</li>
+                <li>
+                <strong>E-Waste</strong> – Refers to all kinds of electronic waste.
+                </li>
+            </ul>  
+        </div>
 
     </section>
 
@@ -37,6 +70,6 @@
     <footer>
         <h4>Waste  Management  System  @  Copyright  2024</h4>
     </footer>
-
+    
 </body>
 </html>

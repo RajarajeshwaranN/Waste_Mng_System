@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Booking</title>
+</head>
+<body>
+    <h1>Are you sure you want to cancel this booking?</h1>
+    <p>Booking for {{ booking.name }} on {{ booking.date }} at {{ booking.time }}</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">Yes, Cancel Booking</button>
+        <a href="{% url 'booking_list' %}">No, Go Back</a>
+    </form>
+</body>
+</html>

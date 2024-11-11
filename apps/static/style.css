@@ -22,6 +22,8 @@ body {
     overflow: hidden;
     border-radius: 15px;
     display: flex;
+    flex-wrap: wrap;
+    
 }
 
 .side-image {
@@ -174,10 +176,10 @@ body {
 }
 
  /* Register Form Specific Styles */
-/* .register-form {
+.register-form {
     display: none;
     display: flex;
-} */
+}
 
 .register-form .top h3 {
     margin-bottom: 30px;
