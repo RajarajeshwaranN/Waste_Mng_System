@@ -1,0 +1,19 @@
+<!-- admin_dashboard/templates/admin_dashboard/assign_task.html -->
+{% extends "base.html" %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+<script src="{% static 'js/scripts.js' %}"></script>
+{% block content %}
+<h2>Assign Task</h2>
+<p><strong>Request ID:</strong> {{ request.id }}</p>
+<p><strong>User:</strong> {{ request.user.username }}</p>
+<p><strong>Waste Type:</strong> {{ request.waste_type }}</p>
+<p><strong>Quantity:</strong> {{ request.quantity }} kg</p>
+<p><strong>Scheduled Time:</strong> {{ request.scheduled_time }}</p>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Assign Task</button>
+</form>
+{% endblock %}

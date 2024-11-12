@@ -32,6 +32,9 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('bookings/', views.booking_list, name='booking_list'),
     path('bookings/delete/<str:email>/', views.delete_booking, name='delete_booking'),
+    path('admin', views.dashboard, name='dashboard'),
+    path('assign/<int:request_id>/', views.assign_task, name='assign_task'),
+    path('update-status/<int:task_id>/', views.update_task_status, name='update_task_status'),
 
 
 

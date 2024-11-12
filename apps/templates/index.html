@@ -21,9 +21,18 @@
                 <a href="{% url 'booking_list' %}">View Request</a>
             </div>
             <div class="logout">
+            <ul>
+                {% if user.is_authenticated %}
+                    {% if user.is_staff or user.is_superuser %}
+                        <li><a href="{% url 'dashboard' %}">Admin Dashboard</a></li>
+                    {% endif %}
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+        </div>
+            {% comment %} <div class="logout">
                 <a href="{% url 'logout' %}">Logout</a>
 
-            </div>
+            </div> {% endcomment %}
         </nav>
     </header>
 
