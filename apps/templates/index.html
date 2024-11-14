@@ -25,8 +25,10 @@
                 {% if user.is_authenticated %}
                     {% if user.is_staff or user.is_superuser %}
                         <li><a href="{% url 'dashboard' %}">Admin Dashboard</a></li>
-                    {% endif %}
+                    {% else %}
                     <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% endif %}
+                {% endif %}
             </ul>
         </div>
             {% comment %} <div class="logout">
@@ -40,7 +42,8 @@
 
     <section>
         <div class="about_mng">
-            <h1>Waste Management System</h1>
+            <h1>Welcome to our</h1>
+            <h1>Waste Management System!!</h1>
             <p>Waste management or waste disposal includes the processes and actions required to manage waste from its inception to its final disposal. This includes the collection, transport, treatment, and disposal of waste, together with monitoring and regulation of the waste management process and waste-related laws, technologies, and economic mechanisms.</p>
         </div>
     <div class="btn">

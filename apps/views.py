@@ -6,7 +6,7 @@ from .models import booking
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth import logout, authenticate
+from django.contrib.auth import logout, authenticate, login
 # from django.contrib.auth import get_user_model
 
 
@@ -18,8 +18,8 @@ def index(request):
     return render(request, 'index.html')
 
 
-def login_view(request):
-    return render(request, 'login.html')
+# def login_view(request):
+#     return render(request, 'login.html')
 
 def signup(request):
     
@@ -31,7 +31,10 @@ def signup(request):
 
             if password == confirm_password:
             # Save the data to the database
-                user = User(username=username, email=email, password=password)
+                if User.objects.filter(username=username).exists():
+                    messages.error(request, 'Username already taken.')
+                    return redirect('login')
+                user = User.objects.create_user(username=username, email=email, password=password)
                 user.save()
                 messages.success(request, 'Signup successful!')
                 return redirect('login')  # Redirect to login page after signup
@@ -41,17 +44,13 @@ def signup(request):
     return render(request,'login.html')
 
 
-def login(request):
+def login_view(request):
     if request.method == 'POST':
-        email = request.POST.get('email')
+        username = request.POST.get('username')
         password = request.POST.get('password')
 
         # Check if user exists in the database
-        user = authenticate(request, username=email, password=password)
-
-        #user = User.objects.get(email=email)
-        print("Email:", email)
-        print("Password:", password)
+        user = authenticate(request, username=username, password=password)
 
         if user is not None:
             # Successful login
@@ -75,6 +74,7 @@ def booking_view(request):
         address = request.POST.get('address')
         waste_type = request.POST.get('waste')
         quantity = request.POST.get('quantity')
+
         
          # Check for empty fields
         if not all([name, email, mobile, date, time, address,waste_type,quantity]):
@@ -128,13 +128,38 @@ def booking_list(request):
 
 
 
-def delete_booking(request, email):
+def delete_booking(request, id):
     # Ensure the booking exists and belongs to the current user
-    Booking = get_object_or_404(booking, email=request.user.email)
+    Booking = get_object_or_404(booking, pk=id)
     if request.method == "POST":
         Booking.delete()  # Delete the booking
         return redirect('booking_list')  # Redirect to the booking list page
-    return render(request, 'delete_confirmation.html', {'Booking': Booking})
+    return render(request, 'delete_booking.html', {'Booking': Booking})
+
+#----------Update Booking--------
+def update_booking(request):
+    if request.method == 'POST':
+        booking_id = request.POST.get('booking_id')
+        new_date = request.POST.get('date')
+        new_time = request.POST.get('time')
+        new_waste = request.POST.get('waste')
+        new_quant = request.POST.get('quant')
+
+        # Retrieve the booking using the ID
+        booking_to_update = get_object_or_404(booking, id=booking_id)
+
+        # Update the booking's date and time
+        booking_to_update.date = new_date
+        booking_to_update.time = new_time
+        booking_to_update.waste_type = new_waste
+        booking_to_update.quantity = new_quant
+        booking_to_update.save()
+
+        messages.success(request, "Booking updated successfully.")
+        return redirect('booking_list') 
+
+
+
 
 #------------Admin dashboard views
 
@@ -160,7 +185,7 @@ def assign_task(request, request_id):
             task.assigned_admin = request.user
             task.save()
             messages.success(request, "Task assigned successfully.")
-            return redirect('admin_dashboard:dashboard')
+            return redirect('dashboard')
     else:
         form = AssignTaskForm()
     return render(request, 'admin_dashboard/assign_task.html', {'form': form, 'request': waste_request})
@@ -174,3 +199,4 @@ def update_task_status(request, task_id):
         messages.success(request, "Task status updated successfully.")
         return redirect('admin_dashboard:dashboard')
     return render(request, 'admin_dashboard/update_task.html', {'task': task})
+

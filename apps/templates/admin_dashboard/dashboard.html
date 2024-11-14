@@ -1,5 +1,5 @@
 <!-- admin_dashboard/templates/admin_dashboard/dashboard.html -->
-{% extends "base.html" %}
+{% comment %} {% extends "base.html" %} {% endcomment %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 <script src="{% static 'js/scripts.js' %}"></script>
@@ -8,9 +8,11 @@
 <table class="table">
     <thead>
         <tr>
+            <th>User_Id</th>
             <th>User</th>
             <th>Waste Type</th>
             <th>Quantity</th>
+            <th>Scheduled Date</th>
             <th>Scheduled Time</th>
             <th>Status</th>
             <th>Actions</th>
@@ -19,13 +21,15 @@
     <tbody>
         {% for request in all_requests %}
         <tr>
-            <td>{{ request.user.username }}</td>
+            <td>{{ request.id }}</td>
+            <td>{{ request.name }}</td>
             <td>{{ request.waste_type }}</td>
             <td>{{ request.quantity }} kg</td>
-            <td>{{ request.scheduled_time }}</td>
+            <td>{{ request.date }}</td>
+            <td>{{ request.time }}</td>
             <td>{{ request.status }}</td>
             <td>
-                <a href="{% url 'admin_dashboard:assign_task' request.id %}" class="btn btn-primary btn-sm">Assign Task</a>
+                <a href="{% url 'assign_task' request.id %}" class="btn btn-primary btn-sm">Assign Task</a>
             </td>
         </tr>
         {% endfor %}

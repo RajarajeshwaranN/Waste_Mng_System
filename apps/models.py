@@ -21,20 +21,23 @@ from django.contrib.auth.models import AbstractBaseUser
 
 
 class booking(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=50)
-    email = models.EmailField(primary_key=True)
+    email = models.EmailField(unique=True)
     mobile = models.CharField(max_length=15)
     date = models.DateField()
     time = models.TimeField()
     address = models.TextField()
     waste_type = models.CharField(max_length=10)
     quantity = models.IntegerField()
+    
+    status = models.CharField(max_length=20, default="Pending")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
     class Meta:
         db_table = 'booking'  # Use the existing `booking` table
-        managed = False
 
     def __str__(self):
         return f"{self.user.name} - {self.date} at {self.time}"
@@ -56,23 +59,3 @@ class AdminTask(models.Model):
     def __str__(self):
         return f"Task for {self.request} - {self.status}"
 
-
-# class WasteRequest(models.Model):
-#     WASTE_TYPES = [
-#         ('Plastic', 'Plastic'),
-#         ('Metal', 'Metal'),
-#         ('Organic', 'Organic'),
-#         ('Electronics', 'Electronics'),
-#     ]
-
-#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="waste_requests")
-#     waste_type = models.CharField(max_length=50, choices=WASTE_TYPES)
-#     quantity = models.DecimalField(max_digits=5, decimal_places=2, help_text="Quantity in kilograms")
-#     scheduled_time = models.DateTimeField(help_text="Scheduled time for waste collection")
-#     status = models.CharField(max_length=20, default="Pending")
-
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
-
-#     def __str__(self):
-#         return f"{self.user.username} - {self.waste_type} - {self.quantity}kg"

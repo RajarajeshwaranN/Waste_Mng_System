@@ -26,12 +26,15 @@ urlpatterns = [
     path('apps/login/', views.login, name='login'),
     path('accounts/', include('allauth.urls')),
     path('signup/', views.signup, name='signup'),
-    path('login/', views.login, name='login'),
+    path('login/', views.login_view, name='login'),
     path('index/', views.index, name='index'),
     path('booking/', views.booking_view, name='booking'),
     path('logout/', views.logout_view, name='logout'),
     path('bookings/', views.booking_list, name='booking_list'),
-    path('bookings/delete/<str:email>/', views.delete_booking, name='delete_booking'),
+    path('bookings/delete/<int:id>/', views.delete_booking, name='delete_booking'),
+    path('update-booking/', views.update_booking, name='update_booking'),
+
+    
     path('admin', views.dashboard, name='dashboard'),
     path('assign/<int:request_id>/', views.assign_task, name='assign_task'),
     path('update-status/<int:task_id>/', views.update_task_status, name='update_task_status'),

@@ -38,9 +38,11 @@ th {
 /* Table Data Styling */
 td {
     padding: 10px;
-    text-align: left;
+    color: wheat;
+    text-align: center;
     border-bottom: 1px solid #444;
 }
+
 
 /* Hover effect for table rows */
 tr:hover {
@@ -78,5 +80,8 @@ a:hover {
     
     h1 {
         font-size: 2em;
+    }
+    a{
+        font-size: small;
     }
 }
