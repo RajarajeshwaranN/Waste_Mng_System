@@ -1,0 +1,114 @@
+body {
+    background-color: #f2f2f2;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.container {
+    max-width: 800px;
+    margin-top: 50px;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+}
+
+.heading {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 32px;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.task-info {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border: 1px solid #ddd;
+}
+
+.task-info p {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #555;
+}
+
+.task-info strong {
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    border-radius: 8px;
+    box-shadow: none;
+    border: 1px solid #ccc;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.btn-primary {
+    background-color: #28a745;
+    border-color: #28a745;
+    font-size: 16px;
+    padding: 12px 20px;
+    width: 100%;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.btn-back {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 16px;
+    color: #007bff;
+    text-decoration: none;
+    padding: 12px 0;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-back:hover {
+    background-color: #e9ecef;
+    color: #0056b3;
+}
+
+.modal-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.modal-body {
+    font-size: 16px;
+    color: #555;
+}
+
+.alert {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Custom styling for Textarea (Notes field) */
+.form-control[aria-describedby="notesHelp"] {
+    height: 120px;
+}

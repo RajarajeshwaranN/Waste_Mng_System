@@ -2,18 +2,18 @@ from django.shortcuts import render, redirect, get_object_or_404
 import mysql.connector as sql
 from django.contrib.auth.models import User
 
-from .models import booking
+from .models import booking, AdminTask
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import logout, authenticate, login
-# from django.contrib.auth import get_user_model
-
-
-# User  = get_user_model()
+from .models import AdminTask
+from .forms import AssignTaskForm
 
 
 # Create your views here.
+
+
 def index(request):
     return render(request, 'index.html')
 
@@ -106,22 +106,16 @@ def logout_view(request):
 
 
 
-
+#-------Booking List of the user------
 def booking_list(request):
     Booking_data = booking.objects.filter(email=request.user.email)
    # Booking_data = booking.objects.all()
 
-    if request.user.is_authenticated:
-        print("User is authenticated:", request.user.email)
-        
-    else:
-        print("User is not authenticated.")
+    for booking_item in Booking_data:
+        task = AdminTask.objects.filter(request=booking_item).first()  # Get the latest assigned task (or whatever logic you want)
 
-    # if request.user.is_authenticated:
-    #     # Filter bookings by the logged-in user's email
-    #     Booking_data = booking.objects.filter(email=request.user.email)
-    # else:
-    #     Booking_data = booking.objects.none()  # Return an empty queryset if the user is not authenticated
+        booking_item.status = task.status if task else "pending"
+
 
     return render(request, 'booking_list.html', {'Booking_data': Booking_data})
 
@@ -163,15 +157,23 @@ def update_booking(request):
 
 #------------Admin dashboard views
 
-from .models import AdminTask
-from .forms import AssignTaskForm
-
 def is_admin(user):
     return user.is_staff  # Only staff members are allowed to access the admin dashboard
 
 @user_passes_test(is_admin)
 def dashboard(request):
     all_requests = booking.objects.all()
+
+    for req in all_requests:
+        # Get the most recent task for the booking
+        task = AdminTask.objects.filter(request=req).order_by('assigned_at').first()
+
+        # Assign the status to the request (booking)
+        if task:
+            req.status = task.status  # Assign status of the found task
+        else:
+            req.status = 'Pending'
+    
     return render(request, 'admin_dashboard/dashboard.html', {'all_requests': all_requests})
 
 @user_passes_test(is_admin)

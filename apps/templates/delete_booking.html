@@ -5,14 +5,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Delete Booking</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static "delete.css"%}">
+
 </head>
 <body>
-    <h1>Are you sure you want to cancel this booking?</h1>
-    <p>Booking for {{ Booking.name }} on {{ Booking.date }} at {{ Booking.time }}</p>
-    <form method="POST">
-        {% csrf_token %}
-        <button type="submit">Yes, Cancel Booking</button>
-        <a href="{% url 'booking_list' %}">No, Go Back</a>
-    </form>
+
+    <div class="container">
+        <div class="heading">
+            <h1>Are you sure you want to cancel this booking?</h1>
+        </div>
+
+        <div class="booking-details">
+            <p>Booking for:<strong> {{ Booking.name }}</strong></p>
+            <p>Date:<strong> {{ Booking.date }}</strong></p>
+            <p>Time:<strong> {{ Booking.time }}</strong></p>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <button type="submit">Yes, Cancel Booking</button>
+            </div>
+            <div class="form-group">
+                <a href="{% url 'booking_list' %}">No, Go Back</a>
+            </div>
+        </form>
+    </div>
+
 </body>
 </html>

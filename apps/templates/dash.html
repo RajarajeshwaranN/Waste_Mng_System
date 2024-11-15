@@ -1,0 +1,60 @@
+{% comment %} {% extends "base.html" %} {% endcomment %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body{
+            align-content: center;
+            align-items: center;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+            justify-content: center;
+            white-space-collapse: preserve;
+        }
+    </style>
+</head>
+<body>
+    
+{% block content %}
+<h2>Admin Dashboard</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>User_Id</th>
+            <th>User</th>
+            <th>Waste Type</th>
+            <th>Quantity</th>
+            <th>Scheduled Date</th>
+            <th>Scheduled Time</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for request in all_requests %}
+        <tr>
+            <td>{{ request.id }}</td>
+            <td>{{ request.name }}</td>
+            <td>{{ request.waste_type }}</td>
+            <td>{{ request.quantity }} kg</td>
+            <td>{{ request.date }}</td>
+            <td>{{ request.time }}</td>
+            <td>{{ request.status }}</td>
+            <td>
+                <a href="{% url 'assign_task' request.id %}" class="btn btn-primary btn-sm">Assign Task</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+
+</body>
+</html>

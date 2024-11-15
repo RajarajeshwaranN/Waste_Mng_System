@@ -17,11 +17,12 @@
             <th>Name</th>
             <th>Email</th>
             <th>Mobile</th>
-            <th>Date</th>
-            <th>Time</th>
+            <th>Scheduled Date</th>
+            <th>Scheduled Time</th>
             <th>Address</th>
             <th>Waste Type</th>
             <th>Quantity</th>
+            <th>Status</th>
             <th colspan="2">Actions</th>
 
         </tr>
@@ -35,12 +36,14 @@
             <td>{{ booking.address }}</td>
             <td>{{ booking.waste_type }}</td>
             <td>{{ booking.quantity }}</td>
+            <td>{{ booking.status }}</td>
+
             <td>
                 <a href="{% url 'delete_booking' booking.id %}">Cancel Booking</a>
             </td>
             <td>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" data-id="{{ booking.id }}">
-                    Edit Booking
+                    Modify Booking
                   </button>    <!-- Trigger Button (e.g., in your bookings list) -->
 
             </td>

@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractBaseUser
 
 
 # Create your models here.
+
 # class User(AbstractBaseUser):
 #     email = models.EmailField(primary_key=True, unique=True)
 
@@ -44,15 +45,20 @@ class booking(models.Model):
     
 class AdminTask(models.Model):
     STATUS_CHOICES = [
+        ('Pending', 'Pending'),
         ('Assigned', 'Assigned'),
         ('In Progress', 'In Progress'),
         ('Completed', 'Completed'),
     ]
     
+    id = models.AutoField(primary_key=True)  
     request = models.ForeignKey(booking, on_delete=models.CASCADE, related_name='admin_tasks')
     assigned_admin = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_tasks')
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Assigned')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
     notes = models.TextField(blank=True, null=True)
+
+    worker = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='worker_tasks')  # The worker/collector assigned to the task
+
     assigned_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

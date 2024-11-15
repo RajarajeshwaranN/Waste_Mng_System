@@ -1,38 +1,77 @@
 <!-- admin_dashboard/templates/admin_dashboard/dashboard.html -->
-{% comment %} {% extends "base.html" %} {% endcomment %}
+
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/styles.css' %}">
-<script src="{% static 'js/scripts.js' %}"></script>
-{% block content %}
-<h2>Admin Dashboard</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>User_Id</th>
-            <th>User</th>
-            <th>Waste Type</th>
-            <th>Quantity</th>
-            <th>Scheduled Date</th>
-            <th>Scheduled Time</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for request in all_requests %}
-        <tr>
-            <td>{{ request.id }}</td>
-            <td>{{ request.name }}</td>
-            <td>{{ request.waste_type }}</td>
-            <td>{{ request.quantity }} kg</td>
-            <td>{{ request.date }}</td>
-            <td>{{ request.time }}</td>
-            <td>{{ request.status }}</td>
-            <td>
-                <a href="{% url 'assign_task' request.id %}" class="btn btn-primary btn-sm">Assign Task</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Include Bootstrap from CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "dashboard.css" %}">
+    
+</head>
+<body>
+
+<div class="container">
+    <div class="table-container">
+        <h2><b>Admin Dashboard</b></h2>
+        <div class="card">
+            <div class="card-header">
+                User Waste Collection Requests
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>User</th>
+                            <th>Waste Type</th>
+                            <th>Quantity</th>
+                            <th>Scheduled Date</th>
+                            <th>Scheduled Time</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for request in all_requests %}
+                        <tr>
+                            <td>{{ request.id }}</td>
+                            <td>{{ request.name }}</td>
+                            <td>{{ request.waste_type }}</td>
+                            <td>{{ request.quantity }} kg</td>
+                            <td>{{ request.date }}</td>
+                            <td>{{ request.time }}</td>
+                            <td>
+                                {% if request.status == "Pending" %}
+                                    <span class="badge badge-status status-pending">Pending</span>
+                                {% elif request.status == "Assigned" %}
+                                    <span class="badge badge-status status-assigned">Assigned</span>
+                                {% elif request.status == "In Progress" %}
+                                <span class="badge badge-status status-inprogress">In Progress</span>
+                                {% elif request.status == "Completed" %}
+                                    <span class="badge badge-status status-completed">Completed</span>
+                                {% else %}
+                                    <span class="badge badge-status">Unknown</span>
+                                {% endif %}
+                            </td>
+                            <td class="actions-btns">
+                                <a href="{% url 'assign_task' request.id %}" class="btn btn-primary btn-sm">Assign Task</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
