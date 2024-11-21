@@ -7,8 +7,17 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import logout, authenticate, login
+
 from .models import AdminTask
 from .forms import AssignTaskForm
+from django.db.models import Max, Subquery, OuterRef
+
+from django.core.mail import send_mail
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+
+
 
 
 # Create your views here.
@@ -63,6 +72,7 @@ def login_view(request):
 
     return render(request, 'login.html')
 
+@login_required
 def booking_view(request):
     if request.method == 'POST':
         # Get form data from the request
@@ -94,6 +104,15 @@ def booking_view(request):
         )
         book.save()
 
+        #-----sending email
+        send_mail(
+            'Booking Request Confirmation',
+            f'Dear {name},\n\nYour booking request has been received.\n\nDetails:\nWaste Type: {waste_type}\nQuantity: {quantity}kg\nScheduled Date: {date}\nTime: {time}\n\nThank you for using our service.',
+            'nrajarajeshwaran12@gmail.com.com',  # Sender email
+            [email],  # Recipient email
+            fail_silently=False,
+        )
+
         return redirect('booking_list')
 
     # Render the form
@@ -107,21 +126,27 @@ def logout_view(request):
 
 
 #-------Booking List of the user------
+@login_required
 def booking_list(request):
-    Booking_data = booking.objects.filter(email=request.user.email)
-   # Booking_data = booking.objects.all()
+    #Booking_data = booking.objects.filter(email=request.user.email)
 
-    for booking_item in Booking_data:
-        task = AdminTask.objects.filter(request=booking_item).first()  # Get the latest assigned task (or whatever logic you want)
+    user = request.user
 
-        booking_item.status = task.status if task else "pending"
+    # Fetch the latest `assigned_at` and `status` from AdminTask for each Booking
+    latest_admin_task = AdminTask.objects.filter(request_id=OuterRef('id')
+        ).order_by('-assigned_at')
 
+    # Annotate Booking table with latest status and assigned_at
+    Booking_data = booking.objects.filter(email=request.user.email).annotate(
+        latest_status=Subquery(latest_admin_task.values('status')[:1]),
+        latest_assigned_time=Subquery(latest_admin_task.values('assigned_at')[:1])
+        ).order_by('-latest_assigned_time')  # Sort by the latest `assigned_at`
 
     return render(request, 'booking_list.html', {'Booking_data': Booking_data})
 
 
 
-
+@login_required
 def delete_booking(request, id):
     # Ensure the booking exists and belongs to the current user
     Booking = get_object_or_404(booking, pk=id)
@@ -131,6 +156,7 @@ def delete_booking(request, id):
     return render(request, 'delete_booking.html', {'Booking': Booking})
 
 #----------Update Booking--------
+@login_required
 def update_booking(request):
     if request.method == 'POST':
         booking_id = request.POST.get('booking_id')
@@ -162,23 +188,26 @@ def is_admin(user):
 
 @user_passes_test(is_admin)
 def dashboard(request):
-    all_requests = booking.objects.all()
+    
+    latest_assign_task = AdminTask.objects.filter(
+        request_id=OuterRef('id')  # Assuming `AssignTask` has a foreign key to `Booking`
+    ).order_by('-assigned_at')  # Order by latest `assigned_at`
 
-    for req in all_requests:
-        # Get the most recent task for the booking
-        task = AdminTask.objects.filter(request=req).order_by('assigned_at').first()
-
-        # Assign the status to the request (booking)
-        if task:
-            req.status = task.status  # Assign status of the found task
-        else:
-            req.status = 'Pending'
+    # Annotate the Booking model with the latest status and assigned_at time
+    all_requests = booking.objects.annotate(
+        latest_assigned_time=Subquery(latest_assign_task.values('assigned_at')[:1]),
+        latest_status=Subquery(latest_assign_task.values('status')[:1])
+    ).order_by('-latest_assigned_time')
     
     return render(request, 'admin_dashboard/dashboard.html', {'all_requests': all_requests})
 
 @user_passes_test(is_admin)
 def assign_task(request, request_id):
     waste_request = get_object_or_404(booking, id=request_id)
+
+    # admin_task = AdminTask.objects.filter(booking=booking).latest('assigned_at')
+
+
     if request.method == 'POST':
         form = AssignTaskForm(request.POST)
         if form.is_valid():
@@ -190,6 +219,14 @@ def assign_task(request, request_id):
             return redirect('dashboard')
     else:
         form = AssignTaskForm()
+
+        # send_mail(
+        #     f'Booking Status Updated: {waste_request.status}',
+        #     f'Dear {waste_request.name},\n\nYour booking status has been updated to "{booking.status}".\n\nThank you.',
+        #     'your_email@example.com',
+        #     [waste_request.email],
+        #     fail_silently=False,
+        # )
     return render(request, 'admin_dashboard/assign_task.html', {'form': form, 'request': waste_request})
 
 @user_passes_test(is_admin)
@@ -201,4 +238,40 @@ def update_task_status(request, task_id):
         messages.success(request, "Task status updated successfully.")
         return redirect('admin_dashboard:dashboard')
     return render(request, 'admin_dashboard/update_task.html', {'task': task})
+
+
+#----------Email - notification ---
+@receiver(post_save, sender=AdminTask)
+def notify_status_update(sender, instance, **kwargs):
+    """
+    Sends an email notification to the user whenever the status of their booking is updated.
+    """
+    
+    # Fetch the associated booking object
+    booking_obj = instance.request  # Assuming `request` is the ForeignKey to `Booking`
+    
+    # Check if the status was updated (without FieldTracker)
+    if kwargs.get('created', False) or instance.status:  # Ensuring the status is updated
+        # Get the updated status and user's email
+        updated_status = instance.status
+        user_email = booking_obj.email  # Assuming `email` is a field in the `Booking` model
+
+        # Construct and send an email notification
+        send_mail(
+            subject='Booking Status Updated',
+            message=f"""
+Hello {booking_obj.name},
+
+Your booking with ID {booking_obj.id} has been updated. 
+The current status is: {updated_status}.
+
+Thank you for choosing our service!
+
+Best regards,
+Waste Management Team
+            """,
+            from_email='nrajarajeshwaran12@gmail.com',  
+            recipient_list=[user_email],
+            fail_silently=False,
+        )
 

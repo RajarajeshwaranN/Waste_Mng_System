@@ -25,14 +25,16 @@
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>User ID</th>
+                            <th>Request ID</th>
                             <th>User</th>
                             <th>Waste Type</th>
                             <th>Quantity</th>
                             <th>Scheduled Date</th>
                             <th>Scheduled Time</th>
                             <th>Status</th>
+                            <th>Last Updated</th>
                             <th>Actions</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -44,19 +46,23 @@
                             <td>{{ request.quantity }} kg</td>
                             <td>{{ request.date }}</td>
                             <td>{{ request.time }}</td>
+                            
                             <td>
-                                {% if request.status == "Pending" %}
+                                {% if request.latest_status == "Pending" %}
                                     <span class="badge badge-status status-pending">Pending</span>
-                                {% elif request.status == "Assigned" %}
+                                {% elif request.latest_status == "Assigned" %}
                                     <span class="badge badge-status status-assigned">Assigned</span>
-                                {% elif request.status == "In Progress" %}
+                                {% elif request.latest_status == "In Progress" %}
                                 <span class="badge badge-status status-inprogress">In Progress</span>
-                                {% elif request.status == "Completed" %}
+                                {% elif request.latest_status == "Completed" %}
                                     <span class="badge badge-status status-completed">Completed</span>
                                 {% else %}
                                     <span class="badge badge-status">Unknown</span>
                                 {% endif %}
                             </td>
+
+                            <td>{{ request.latest_assigned_time|date:"d M Y H:i" }}</td>
+                            
                             <td class="actions-btns">
                                 <a href="{% url 'assign_task' request.id %}" class="btn btn-primary btn-sm">Assign Task</a>
                             </td>

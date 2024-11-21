@@ -1,24 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.auth.models import AbstractBaseUser
+from model_utils import FieldTracker
 
-
-
-# Create your models here.
-
-# class User(AbstractBaseUser):
-#     email = models.EmailField(primary_key=True, unique=True)
-
-#     # username = models.CharField(max_length=20) 
-#     # password = models.CharField(max_length=10)
-#     # confirm_password = models.CharField(max_length=10)
-  
-
-
-#     REQUIRED_FIELDS = []
-#     USERNAME_FIELD = 'email'
-
-    
 
 
 class booking(models.Model):
@@ -61,6 +44,8 @@ class AdminTask(models.Model):
 
     assigned_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    tracker = FieldTracker(fields=['status'])
+
 
     def __str__(self):
         return f"Task for {self.request} - {self.status}"

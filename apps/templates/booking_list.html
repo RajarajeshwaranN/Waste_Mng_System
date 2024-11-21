@@ -36,7 +36,21 @@
             <td>{{ booking.address }}</td>
             <td>{{ booking.waste_type }}</td>
             <td>{{ booking.quantity }}</td>
-            <td>{{ booking.status }}</td>
+
+            <td>
+              {% if booking.latest_status == "Pending" %}
+                  <span class="badge badge-status status-pending">Pending</span>
+              {% elif booking.latest_status == "Assigned" %}
+                  <span class="badge badge-status status-assigned">Assigned</span>
+              {% elif booking.latest_status == "In Progress" %}
+                  <span class="badge badge-status status-inprogress">In Progress</span>
+              {% elif booking.latest_status == "Completed" %}
+                  <span class="badge badge-status status-completed">Completed</span>
+              {% else %}
+                  <span class="badge badge-status">Unknown</span>
+              {% endif %}
+          </td>
+
 
             <td>
                 <a href="{% url 'delete_booking' booking.id %}">Cancel Booking</a>

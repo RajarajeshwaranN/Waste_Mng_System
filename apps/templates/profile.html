@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+</head>
+<body>
+    <h2>Profile</h2>
+{% if profile_picture_url %}
+    <img src="{{ profile_picture_url }}" alt="Profile Picture">
+{% else %}
+    <p>No profile picture available.</p>
+{% endif %}
+{% comment %} <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" width="150"> {% endcomment %}
+<p><strong>Username:</strong> {{ request.user.username }}</p>
+<p><strong>Email:</strong> {{ request.user.email }}</p>
+<p><strong>Phone Number:</strong> {{ profile.phone_number }}</p>
+<p><strong>Address:</strong> {{ profile.address }}</p>
+
+<a href="{% url 'user_profile:edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+<a href="{% url 'user_profile:collection_history' %}" class="btn btn-secondary">View Collection History</a>
+</body>
+</html>
