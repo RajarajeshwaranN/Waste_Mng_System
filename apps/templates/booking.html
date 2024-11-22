@@ -7,11 +7,14 @@
     <title>Booking Form</title>
     <link rel="stylesheet" href="{% static 'stylebook.css' %}">
     <style>
-        body{
-            background-image: url({% static 'images/background.jpeg' %});
-            background-position: cover;
-
-
+        body {
+            background-image: url("{% static 'images/request_background1.jpg' %}");
+            {% comment %} background-color: #020202ad; {% endcomment %}
+            background-size: cover; /* Ensures the image covers the entire screen */
+            background-position: center; /* Centers the image */
+            background-repeat: no-repeat; /* Prevents tiling */
+            height: 140vh; /* Ensures it covers the full viewport height */
+            margin: 0;
         }
         header{
             width: 100%;
