@@ -4,10 +4,14 @@
     box-sizing: border-box;
     font-family: Arial, sans-serif;
 }
-/* body{
-    background-image: url({% static 'images/background.jpeg' %});
-    background-position: cover;
-} */
+body {
+    background-image: url("{% static 'images/request_background.jpg' %}");
+    background-size: cover; /* Ensures the image covers the entire screen */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents tiling */
+    height: 100vh; /* Ensures it covers the full viewport height */
+    margin: 0;
+}
 
 .form-container {
     max-width: 500px;
@@ -32,7 +36,7 @@ h2 {
 label {
     display: block;
     font-weight: bold;
-    color: #555;
+    color: #191818;
     margin-bottom: 5px;
 }
 

@@ -30,7 +30,7 @@ class AdminTask(models.Model):
     STATUS_CHOICES = [
         ('Pending', 'Pending'),
         ('Assigned', 'Assigned'),
-        ('In Progress', 'In Progress'),
+        # ('In Progress', 'In Progress'),
         ('Completed', 'Completed'),
     ]
     

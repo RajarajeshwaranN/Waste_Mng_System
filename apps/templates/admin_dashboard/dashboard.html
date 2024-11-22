@@ -48,16 +48,16 @@
                             <td>{{ request.time }}</td>
                             
                             <td>
-                                {% if request.latest_status == "Pending" %}
-                                    <span class="badge badge-status status-pending">Pending</span>
-                                {% elif request.latest_status == "Assigned" %}
+                                {% comment %} {% if request.latest_status == "Pending" %}
+                                    <span class="badge badge-status status-pending">Pending</span> {% endcomment %}
+                                {% if request.latest_status == "Assigned" %}
                                     <span class="badge badge-status status-assigned">Assigned</span>
                                 {% elif request.latest_status == "In Progress" %}
                                 <span class="badge badge-status status-inprogress">In Progress</span>
                                 {% elif request.latest_status == "Completed" %}
                                     <span class="badge badge-status status-completed">Completed</span>
                                 {% else %}
-                                    <span class="badge badge-status">Unknown</span>
+                                    <span class="badge badge-status status-pending">Pending</span>
                                 {% endif %}
                             </td>
 
