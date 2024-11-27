@@ -16,6 +16,8 @@ from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from datetime import datetime
+
 
 
 
@@ -65,7 +67,11 @@ def login_view(request):
             # Successful login
             # Redirect to a dashboard or home page
             login(request, user)
-            return redirect('index')  
+            if request.user.is_superuser:
+                return redirect('dashboard')
+            else:
+                return redirect('index')  
+            
         else:
             messages.error(request, 'Invalid password')
        
@@ -74,6 +80,11 @@ def login_view(request):
 
 @login_required
 def booking_view(request):
+    context = {
+            'username': request.user.username,
+            'email': request.user.email,
+    }
+    
     if request.method == 'POST':
         # Get form data from the request
         name = request.POST.get('name')
@@ -116,7 +127,7 @@ def booking_view(request):
         return redirect('booking_list')
 
     # Render the form
-    return render(request, 'booking.html')
+    return render(request, 'booking.html', context)
 
 #logout function---------
 def logout_view(request):
@@ -151,7 +162,18 @@ def delete_booking(request, id):
     # Ensure the booking exists and belongs to the current user
     Booking = get_object_or_404(booking, pk=id)
     if request.method == "POST":
+        booking_email = Booking.email
+        booking_name = Booking.name
+        booking_id = Booking.id
+
         Booking.delete()  # Delete the booking
+        send_mail(
+            subject="Booking Cancellation Notification",
+            message=f"Hello {booking_name},\n\nYour booking with ID {booking_id} has been cancelled successfully on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}.\n\nDetails:\nWaste Type: {Booking.waste_type}\nQuantity: {Booking.quantity}kg\nScheduled Date: {Booking.date}\nTime: {Booking.time}\n\nIf you have any questions, please contact our support team.\n\nThank you!",
+            from_email="no-reply@example.com",
+            recipient_list=[booking_email],
+            fail_silently=False,
+        )
         return redirect('booking_list')  # Redirect to the booking list page
     return render(request, 'delete_booking.html', {'Booking': Booking})
 
@@ -200,6 +222,27 @@ def dashboard(request):
     ).order_by('-latest_assigned_time')
     
     return render(request, 'admin_dashboard/dashboard.html', {'all_requests': all_requests})
+
+@login_required
+def users_list(request):
+    if not request.user.is_superuser:
+        return HttpResponse("Unauthorized", status=403)
+
+    users = User.objects.all()
+    return render(request, 'admin_dashboard/users_list.html', {'users': users})
+
+@login_required
+def deactivate_user(request, user_id):
+    if not request.user.is_superuser:
+        return HttpResponse("Unauthorized", status=403)
+
+    try:
+        user = User.objects.get(pk=user_id)
+        user.is_active = False
+        user.save()
+        return redirect('users_list')
+    except User.DoesNotExist:
+        return HttpResponse("User not found", status=404)
 
 @user_passes_test(is_admin)
 def assign_task(request, request_id):
@@ -275,3 +318,17 @@ Waste Management Team
             fail_silently=False,
         )
 
+@receiver(post_save, sender=booking)
+def notify_booking_update(sender, instance, created, **kwargs):
+        
+    subject = "Booking Modification Notification"
+    message = f"Hello {instance.name},\n\nYour booking with ID {instance.id} has been updated.\n\nNew Details:\nDate: {instance.date}\nTime: {instance.time}\nQuantity: {instance.quantity}\nType: {instance.waste_type}\nStatus: {instance.status}\n\nThank you for using our service!"
+
+    # Send email to the user
+    send_mail(
+        subject=subject,
+        message=message,
+        from_email='nrajarajeshwaran12@gmail.com',
+        recipient_list=[instance.email],
+        fail_silently=False,
+    )

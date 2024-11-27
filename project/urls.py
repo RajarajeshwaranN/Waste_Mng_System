@@ -39,7 +39,8 @@ urlpatterns = [
     path('assign/<int:request_id>/', views.assign_task, name='assign_task'),
     path('update-status/<int:task_id>/', views.update_task_status, name='update_task_status'),
 
-
+    path('users/', views.users_list, name='users_list'),
+    path('users/deactivate/<int:user_id>/', views.deactivate_user, name='deactivate_user'),
 
 
 ]

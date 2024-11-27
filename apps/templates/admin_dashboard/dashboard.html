@@ -13,6 +13,25 @@
     
 </head>
 <body>
+    <header>
+        
+        <nav class="nav_bar">
+            <div class="logo">Wst Manager</div>
+            <div class="menu">
+                <a href="{% url 'users_list' %}"> Users </a>
+                
+
+            </div>
+            <div class="logout">
+            <ul>
+                {% if user.is_authenticated %}                    
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% endif %}
+            </ul>
+        </div>
+            
+        </nav>
+    </header>
 
 <div class="container">
     <div class="table-container">
