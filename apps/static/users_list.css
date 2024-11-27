@@ -1,0 +1,105 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(225deg, #000000, #134e4a);
+    color: #f1f5f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+h1 {
+    margin: 20px 0;
+    font-size: 2.5rem;
+    color: #ffffff;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+/* Table Styles */
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    background-color: #1e293b;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px 20px;
+    text-align: center;
+}
+
+th {
+    background-color: #ffffff;
+    color: #000c17;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+}
+
+td {
+    color: #d1d5db;
+    font-size: 1rem;
+}
+
+tr:nth-child(even) {
+    background-color: #2c3e50;
+}
+
+tr:hover {
+    background-color: #475569;
+    transition: background-color 0.3s ease;
+}
+
+/* Badge Styles */
+.badge {
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    text-transform: capitalize;
+}
+
+.badge-active {
+    background-color: #10b981;
+    color: #fff;
+}
+
+.badge-deactivated {
+    background-color: #f87171;
+    color: #fff;
+}
+
+/* Button Styles */
+.deactivate-btn {
+    display: inline-block;
+    padding: 8px 14px;
+    color: #fff;
+    background-color: #e11d48;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.deactivate-btn:hover {
+    background-color: #9f1239;
+    box-shadow: 0 4px 12px rgba(225, 29, 72, 0.5);
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 768px) {
+    table {
+        font-size: 0.8rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+}

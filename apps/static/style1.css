@@ -197,6 +197,37 @@ section .btn .b1:hover, section .btn .b2:hover {
     font-size: 1.1rem;
 }
 
+/* Profile Hover Box */
+.profile {
+    position: relative; /* Required to position the hover box */
+  }
+.profile-hover {
+    display: none; /* Initially hidden */
+    position: absolute;
+    top: 50px;
+    left: 0;
+    background-color: #fff;
+    color: #000000;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 1000;
+    min-width: 200px;
+  }
+  
+  .profile-hover p {
+    margin: 5px 0;
+    font-size: 14px;
+  }
+  .profile:hover{
+    
+    color: gold;
+  }
+  /* Show hover box on hover */
+  .profile:hover .profile-hover {
+    display: block;
+    
+  }
 /* Footer styling */
 footer {
     background-color: #34495e;
