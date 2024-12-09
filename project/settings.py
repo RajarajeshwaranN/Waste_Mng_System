@@ -71,6 +71,24 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
 ]
 
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': os.getenv('GOOGLE_CLIENT_ID'),
+            'secret': os.getenv('GOOGLE_CLIENT_SECRET'),
+            'key': ''
+        },
+        'SCOPE': ['profile','email',],
+        'AUTH_PARAMS': {'access_type': 'online'},
+        'METHOD': 'oauth2',
+        'VERIFIED_EMAIL': True,
+    }
+}
+
+SOCIALACCOUNT_LOGIN_ON_GET=True
+
+LOGIN_REDIRECT_URL = "/index/"
+
 ROOT_URLCONF = 'project.urls'
 
 TEMPLATES = [

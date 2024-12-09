@@ -93,6 +93,12 @@ body {
     outline: none;
 }
 
+.input-group .error{
+    color: #ff3860;
+    font-size: 14px;
+    height: 5px;
+}
+
 .remember {
     display: flex;
     align-items: center;

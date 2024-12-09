@@ -23,6 +23,7 @@ body {
     border: black solid;
 }
 
+
 h2 {
     text-align: center;
     margin-bottom: 20px;
@@ -31,6 +32,12 @@ h2 {
 
 .form-group {
     margin-bottom: 15px;
+}
+
+.form-group .error{
+    color: #ff3860;
+    font-size: 15px;
+    height: 8px;
 }
 
 label {
@@ -67,7 +74,7 @@ input[type="submit"] {
     border: none;
     border-radius: 5px;
     font-size: 16px;
-    background-color: #5cb85c;
+    background-color: #498a49;
     color: white;
     cursor: pointer;
     transition: background-color 0.3s;

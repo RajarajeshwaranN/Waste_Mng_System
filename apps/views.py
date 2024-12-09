@@ -139,8 +139,7 @@ def logout_view(request):
 #-------Booking List of the user------
 @login_required
 def booking_list(request):
-    #Booking_data = booking.objects.filter(email=request.user.email)
-
+    
     user = request.user
 
     # Fetch the latest `assigned_at` and `status` from AdminTask for each Booking
@@ -156,6 +155,7 @@ def booking_list(request):
     return render(request, 'booking_list.html', {'Booking_data': Booking_data})
 
 
+#----------Delete Booking----------
 
 @login_required
 def delete_booking(request, id):

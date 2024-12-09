@@ -14,8 +14,7 @@
     <h1>Your Bookings</h1>
     <table border="1">
         <tr>
-            <th>Name</th>
-            <th>Email</th>
+            
             <th>Mobile</th>
             <th>Scheduled Date</th>
             <th>Scheduled Time</th>
@@ -28,8 +27,7 @@
         </tr>
         {% for booking in Booking_data %}
         <tr>
-            <td>{{ booking.name }}</td>
-            <td>{{ booking.email }}</td>
+            
             <td>{{ booking.mobile }}</td>
             <td>{{ booking.date }}</td>
             <td>{{ booking.time }}</td>
@@ -38,12 +36,10 @@
             <td>{{ booking.quantity }}</td>
 
             <td>
-              {% comment %} {% if booking.latest_status == "Pending" %}
-                  <span class="badge badge-status status-pending">Pending</span> {% endcomment %}
               {% if booking.latest_status == "Assigned" %}
                   <span class="badge badge-status status-assigned">Assigned</span>
-              {% elif booking.latest_status == "In Progress" %}
-                  <span class="badge badge-status status-inprogress">In Progress</span>
+              {% comment %} {% elif booking.latest_status == "In Progress" %}
+                  <span class="badge badge-status status-inprogress">In Progress</span> {% endcomment %}
               {% elif booking.latest_status == "Completed" %}
                   <span class="badge badge-status status-completed">Completed</span>
               {% else %}
@@ -51,14 +47,24 @@
               {% endif %}
           </td>
 
+            <td>
+              {% if booking.status == 'pending' %}
+                <a href="{% url 'delete_booking' booking.id %}">Cancel Booking</a>
+              {% else %}
+                <span class="disabled-link" style="color: grey;">Cancel Booking</span>
+              {% endif %}
+            </td>
 
             <td>
-                <a href="{% url 'delete_booking' booking.id %}">Cancel Booking</a>
-            </td>
-            <td>
+              {% if booking.latest_status == 'Pending' %}
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" data-id="{{ booking.id }}">
-                    Modify Booking
-                  </button>    <!-- Trigger Button (e.g., in your bookings list) -->
+                      Modify Booking
+                </button>
+              {% else %}
+                  <button type="button" class="btn btn-secondary" disabled>
+                      Modify Booking
+                  </button>
+              {% endif %}
 
             </td>
         </tr>
