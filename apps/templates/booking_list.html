@@ -48,15 +48,21 @@
           </td>
 
             <td>
-              {% if booking.status == 'pending' %}
+              <a href="{% url 'delete_booking' booking.id %}">Cancel Booking</a>
+
+              {% comment %} {% if booking.latest_status == 'Pending' %}
                 <a href="{% url 'delete_booking' booking.id %}">Cancel Booking</a>
               {% else %}
                 <span class="disabled-link" style="color: grey;">Cancel Booking</span>
-              {% endif %}
+              {% endif %} {% endcomment %}
             </td>
 
             <td>
-              {% if booking.latest_status == 'Pending' %}
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" data-id="{{ booking.id }}">
+                Modify Booking
+          </button>
+        
+              {% comment %} {% if booking.latest_status == 'Pending' %}
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" data-id="{{ booking.id }}">
                       Modify Booking
                 </button>
@@ -64,7 +70,7 @@
                   <button type="button" class="btn btn-secondary" disabled>
                       Modify Booking
                   </button>
-              {% endif %}
+              {% endif %} {% endcomment %}
 
             </td>
         </tr>
