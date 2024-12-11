@@ -48,29 +48,24 @@
           </td>
 
             <td>
-              <a href="{% url 'delete_booking' booking.id %}">Cancel Booking</a>
-
-              {% comment %} {% if booking.latest_status == 'Pending' %}
-                <a href="{% url 'delete_booking' booking.id %}">Cancel Booking</a>
-              {% else %}
+              {% if booking.latest_status == 'Assigned' or booking.latest_status == 'Completed' %}
                 <span class="disabled-link" style="color: grey;">Cancel Booking</span>
-              {% endif %} {% endcomment %}
+              {% else %}
+              <a href="{% url 'delete_booking' booking.id %}">Cancel Booking</a>
+                
+              {% endif %}
             </td>
 
             <td>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" data-id="{{ booking.id }}">
+              {% if booking.latest_status == 'Assigned' or booking.latest_status == 'Completed' %}
+                <button type="button" class="btn btn-secondary" disabled>
                 Modify Booking
-          </button>
-        
-              {% comment %} {% if booking.latest_status == 'Pending' %}
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" data-id="{{ booking.id }}">
-                      Modify Booking
                 </button>
               {% else %}
-                  <button type="button" class="btn btn-secondary" disabled>
-                      Modify Booking
-                  </button>
-              {% endif %} {% endcomment %}
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" data-id="{{ booking.id }}">
+                    Modify Booking
+                </button>
+              {% endif %}
 
             </td>
         </tr>

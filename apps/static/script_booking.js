@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    const form = document.querySelector('.form-container form');     const nameInput = form.querySelector('#name');
+    const form = document.querySelector('.form-container form');     
+    const nameInput = form.querySelector('#name');
     const emailInput = form.querySelector('#email');
     const mobileInput = form.querySelector('#mobile');
     const dateInput = form.querySelector('#date');
@@ -10,11 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const quantityInput = form.querySelector('#quantity');
 
     form.addEventListener('submit', (e) => {
-        e.preventDefault(); // Prevent form submission for validation
+        
+        resetErrors(form);
 
         let valid = true;
-
-        resetErrors(form);
 
         if (!nameInput.value.trim()) {
             showError(nameInput, "Name is required.");
@@ -57,6 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!quantityInput.value.trim() || quantityInput.value <= 0) {
             showError(quantityInput, "Valid quantity is required.");
             valid = false;
+        }
+
+        if (!valid) {
+            e.preventDefault(); // Only prevent submission when invalid
         }
     });
 

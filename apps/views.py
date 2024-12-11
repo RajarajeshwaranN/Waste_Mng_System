@@ -135,7 +135,6 @@ def logout_view(request):
     return redirect('login') 
 
 
-
 #-------Booking List of the user------
 @login_required
 def booking_list(request):
@@ -148,10 +147,9 @@ def booking_list(request):
 
     # Annotate Booking table with latest status and assigned_at
     Booking_data = booking.objects.filter(email=request.user.email).annotate(
-        latest_status=Subquery(latest_admin_task.values('status')[:1]),
+        latest_status=(Subquery(latest_admin_task.values('status')[:1])),
         latest_assigned_time=Subquery(latest_admin_task.values('assigned_at')[:1])
         ).order_by('-latest_assigned_time')  # Sort by the latest `assigned_at`
-
     return render(request, 'booking_list.html', {'Booking_data': Booking_data})
 
 
